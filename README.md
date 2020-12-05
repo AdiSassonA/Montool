@@ -27,9 +27,21 @@ That spins up all components with the latest versions, and with a Prometheus ret
 Flags:
 
 "-p" for Prometheus version.
-"-r" for Prometheus retention.
+
 "-n" for Node Exporter version.
+
 "-g" for Grafana version.
+
+*Note: you need to specify the full tag version's name, for exaple:
+```
+montool create -p v1.1.1
+```
+
+"-r" for Prometheus retention
+*Notice that you need to mention the unit of time, "h" for hours \ "d" for days, for example:
+```
+montool create -r 100h
+```
 
 ## Show
 Use show to see all montool containers. 
