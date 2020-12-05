@@ -20,11 +20,10 @@ import (
 	"github.com/spf13/cobra"
 )
 
-// showCmd represents the show command
-var showCmd = &cobra.Command{
-	Use:   "show",
-	Short: "Shows monitoring running containers",
-	Long:  `Use this command to view all running containerd for your montool project.`,
+// removeCmd represents the remove command
+var removeCmd = &cobra.Command{
+	Use:   "remove",
+	Short: "Stops and remove all montool containers",
 
 	Run: func(cmd *cobra.Command, args []string) {
 		PrometheusVersion, err := createCmd.Flags().GetString("prometheus-version")
@@ -32,11 +31,12 @@ var showCmd = &cobra.Command{
 			fmt.Println(err)
 		}
 		createFile(PrometheusVersion)
-		params := []string{"-f", fileName, "ps"}
+		params := []string{"-f", fileName, "rm", "--force", "-s"}
 		runCommand(params...)
 	},
 }
 
 func init() {
-	rootCmd.AddCommand(showCmd)
+	rootCmd.AddCommand(removeCmd)
+
 }

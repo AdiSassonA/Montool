@@ -56,35 +56,14 @@ var createCmd = &cobra.Command{
 			"NodeVersion":         NodeVersion,
 			"GrafanaVersion":      GrafanaVersion,
 		}
-		{
-			f, err := os.Create("config/.env")
 
-			if err != nil {
-				log.Fatal(err)
-			}
+		createConf(envMap)
 
-			defer f.Close()
+		createFile(PrometheusVersion)
 
-			for k, v := range envMap {
-				fmt.Println("Going to create", k, "=", v)
-				d := fmt.Sprintln(k, "=", v)
-				d1 := []byte(d)
-				_, err2 := f.Write(d1)
+		params := []string{"-f", fileName, "--env-file", "config/.env", "up", "-d"}
+		runCommand(params...)
 
-				if err2 != nil {
-					log.Fatal(err2)
-				}
-			}
-		}
-
-		create(PrometheusVersion)
-		dockerCom := exec.Command("docker-compose", "-f", fileName, "--env-file", "config/.env", "up", "-d")
-		dockerCom.Stdout = os.Stdout
-		dockerCom.Stderr = os.Stderr
-		err = dockerCom.Run()
-		if err != nil {
-			log.Fatal(err)
-		}
 	},
 }
 
@@ -99,7 +78,27 @@ func init() {
 
 var fileName string
 
-func create(s string) string {
+func createConf(m map[string]string) {
+	f, err := os.Create("config/.env")
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	defer f.Close()
+
+	for k, v := range m {
+		log.Println("Going to create", k, "=", v)
+		d := fmt.Sprintln(k, "=", v)
+		d1 := []byte(d)
+		_, err2 := f.Write(d1)
+
+		if err2 != nil {
+			log.Fatal(err2)
+		}
+	}
+}
+
+func createFile(s string) string {
 
 	fileName = "docker-compose-v2.yml"
 	matched, err := regexp.Match("v1.*", []byte(s))
@@ -111,4 +110,14 @@ func create(s string) string {
 	}
 
 	return fileName
+}
+
+func runCommand(sos ...string) {
+	dockerCom := exec.Command("docker-compose", sos...)
+	dockerCom.Stdout = os.Stdout
+	dockerCom.Stderr = os.Stderr
+	err := dockerCom.Run()
+	if err != nil {
+		log.Fatal(err)
+	}
 }
