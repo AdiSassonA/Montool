@@ -65,6 +65,9 @@ var createCmd = &cobra.Command{
 		params := []string{"-f", fileName, "--env-file", "config/local.env", "up", "-d"}
 		runCommand(params...)
 
+		fmt.Println(`Prometheus is now available on http://0.0.0.0:9090
+		Grafana is now available on http://0.0.0.0:3000`)
+
 	},
 }
 
