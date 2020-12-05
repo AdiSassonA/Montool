@@ -27,9 +27,6 @@ var cfgFile string
 var rootCmd = &cobra.Command{
 	Use:   "montool",
 	Short: "Use montool to creat your own monitoring environment",
-	Long: `Use "create" to set the tools versions and spin up the monitoring environment.
-	Use show to show montool running containers.
-	Use done to stop and remove all containers`,
 }
 
 // Execute adds all child commands to the root command and sets flags appropriately.
