@@ -27,9 +27,10 @@ import (
 // createCmd represents the create command
 var createCmd = &cobra.Command{
 	Use:   "create",
-	Short: "Spin up monitoring environment on your local computer.",
-	Long: `Takes a few parameters to set up the tools versions and retention and create docker containers on your local computer.
-	Latests versions and 240 hours retention is the default.`,
+	Short: "Creates monitoring components on your local machine.",
+	Long: `Creates Prometheus, Grafana, Node Exporter, and cAdvisor on your local machine.
+	It takes a few parameters to set up the tools versions and the Prometheus retention.
+	Latests versions and 240 hours retention are seted by default.`,
 
 	Run: func(cmd *cobra.Command, args []string) {
 
@@ -61,7 +62,7 @@ var createCmd = &cobra.Command{
 
 		createFile(PrometheusVersion)
 
-		params := []string{"-f", fileName, "--env-file", "config/.env", "up", "-d"}
+		params := []string{"-f", fileName, "--env-file", "config/local.env", "up", "-d"}
 		runCommand(params...)
 
 	},
@@ -79,7 +80,7 @@ func init() {
 var fileName string
 
 func createConf(m map[string]string) {
-	f, err := os.Create("config/.env")
+	f, err := os.Create("config/local.env")
 	if err != nil {
 		log.Fatal(err)
 	}
