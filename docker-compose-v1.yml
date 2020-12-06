@@ -66,7 +66,6 @@ services:
 
   grafana:
     image: grafana/grafana:${GrafanaVersion}
-    user: "472"
     depends_on:
       - prometheus
     ports:
