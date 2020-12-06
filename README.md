@@ -43,6 +43,12 @@ montool create -p v1.1.1
 montool create -r 100h
 ```
 
+The Grafana Dashboard is now accessible via: http://<Host IP Address>:3000 for example http://127.0.0.1:3000
+```
+username - admin
+password - foobar (Password is stored in the `/grafana/config.monitoring` env file)
+```
+ 
 ## Show
 Use show to see all montool containers. 
 ```
